@@ -1,7 +1,9 @@
 <script setup></script>
 
 <template>
-  <div>frontend commentboard</div>
+  <div>
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>

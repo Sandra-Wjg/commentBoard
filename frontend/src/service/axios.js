@@ -1,10 +1,6 @@
 import axios from "axios";
 axios.defaults.withCredentials = true;
-const instance = axios.create({
-  withCredentials: true,
-  baseURL: "",
-  timeout: 5000,
-});
+
 // 统一处理 res
 function resHandler(res = {}) {
   const resData = res.data || {};
@@ -20,9 +16,8 @@ function resHandler(res = {}) {
 
 async function ajaxGet(url = "", params = {}) {
   if (!url) return;
-
   try {
-    const res = await instance.get(url, params);
+    const res = await axios.get(url, params);
     return resHandler(res);
   } catch (ex) {
     throw Error(ex);
@@ -31,9 +26,8 @@ async function ajaxGet(url = "", params = {}) {
 
 async function ajaxPost(url = "", data = {}) {
   if (!url) return;
-
   try {
-    const res = await instance.post(url, data);
+    const res = await axios.post(url, data);
     return resHandler(res);
   } catch (ex) {
     throw Error(ex);

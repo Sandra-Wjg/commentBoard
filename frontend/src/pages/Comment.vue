@@ -11,7 +11,7 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitComment"> 提交留言 </el-button>
+        <el-button type="primary" @click="addComment"> 提交留言 </el-button>
       </el-form-item>
       <el-form-item>
         <el-radio-group v-model="filterType" @change="changeFilter">
@@ -29,9 +29,14 @@
 <script setup>
 import { ref } from "vue";
 import CommentList from "../components/CommentList.vue";
+import {
+  createCommentService,
+  getCommentListService,
+} from "../service/comment";
 
 const filterType = ref(1);
 const comment = ref("");
+
 const itemList = ref([
   // 模拟数据
   {
@@ -55,7 +60,7 @@ const itemList = ref([
   },
 ]);
 
-function submitComment() {
+function addComment() {
   console.log("提交评论：", comment.value);
 }
 function changeFilter() {

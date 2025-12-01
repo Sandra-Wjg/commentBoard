@@ -33,7 +33,11 @@
 
 <script setup>
 import { reactive, ref } from "vue";
+import { ElMessage } from "element-plus";
+import { registerService } from "../service/user";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const userInfo = reactive({
   username: "",
   password: "",
@@ -42,10 +46,22 @@ const userInfo = reactive({
   city: "北京",
   gender: 0,
 });
-
-function onSubmit() {
-  console.log("登录信息：", userInfo);
-  // 在这里添加登录逻辑，例如发送请求到后端进行验证
+function goBack() {
+  router.push("/");
+}
+async function onSubmit() {
+  // 校验信息
+  if (!userInfo.username || !userInfo.password) {
+    ElMessage.error("用户名和密码不能为空");
+    return;
+  }
+  if (userInfo.password !== userInfo.conformPassword) {
+    ElMessage.error("两次输入的密码不一致");
+    return;
+  }
+  delete userInfo.conformPassword;
+  await registerService(userInfo);
+  goBack();
 }
 </script>
 

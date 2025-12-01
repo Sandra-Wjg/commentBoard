@@ -17,15 +17,20 @@
 
 <script setup>
 import { reactive, ref } from "vue";
+import { ElMessage } from "element-plus";
+import { loginService } from "../service/user";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const userInfo = reactive({
   username: "",
   password: "",
 });
 
-function onSubmit() {
-  console.log("登录信息：", userInfo);
-  // 在这里添加登录逻辑，例如发送请求到后端进行验证
+async function onSubmit() {
+  const { username, password } = userInfo;
+  await loginService(username, password);
+  router.push("/");
 }
 </script>
 

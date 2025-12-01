@@ -15,10 +15,11 @@ async function registerService(userInfo = {}) {
  * @param {String} password 密码
  */
 async function loginService(username, password) {
-  await ajaxPost(LOGIN_URL, {
+  const userinfo = await ajaxPost(LOGIN_URL, {
     username,
     password,
   });
+  return userinfo;
 }
 
 /**

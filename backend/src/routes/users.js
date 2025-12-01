@@ -1,8 +1,9 @@
 const router = require("koa-router")();
 const { register, login } = require("../controller/user");
+const loginCheck = require("../middleware/loginCheck");
 
 router.prefix("/users");
-
+// 注册
 router.post("/register", async (ctx, next) => {
   // 获取注册信息
   const userInfo = ctx.request.body;
@@ -22,7 +23,7 @@ router.post("/register", async (ctx, next) => {
     };
   }
 });
-
+// 登录
 router.post("/login", async (ctx, next) => {
   const userInfo = ctx.request.body;
   try {
@@ -45,6 +46,13 @@ router.post("/login", async (ctx, next) => {
       message: "登录失败",
     };
   }
+});
+// 获取用户信息
+router.get("/getUserInfo", loginCheck, async (ctx, next) => {
+  ctx.body = {
+    errno: 0,
+    data: ctx.session.userInfo,
+  };
 });
 
 module.exports = router;

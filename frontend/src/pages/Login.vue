@@ -29,7 +29,8 @@ const userInfo = reactive({
 
 async function onSubmit() {
   const { username, password } = userInfo;
-  await loginService(username, password);
+  const loginUsername = await loginService(username, password);
+  sessionStorage.setItem("username", loginUsername);
   router.push("/comment");
 }
 </script>

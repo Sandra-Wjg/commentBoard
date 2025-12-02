@@ -12,7 +12,25 @@ async function getList(username = "") {
   const list = await Comment.find(whereOpt).sort({ _id: -1 });
   return list;
 }
+
+async function del(_id, username) {
+  await Comment.deleteOne({
+    _id,
+    username,
+  });
+}
+
+async function update(_id, username, content) {
+  const newData = await Comment.findOneAndUpdate(
+    { _id, username },
+    { content },
+    { new: true }
+  );
+  return newData;
+}
 module.exports = {
   create,
   getList,
+  del,
+  update,
 };

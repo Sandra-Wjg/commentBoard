@@ -1,7 +1,7 @@
 // 留言
 const router = require("koa-router")();
 const loginCheck = require("../middleware/loginCheck");
-const { create, getList } = require("../controller/comment");
+const { create, getList, del, update } = require("../controller/comment");
 
 router.prefix("/comment");
 router.post("/create", loginCheck, async (ctx, next) => {
@@ -25,5 +25,38 @@ router.get("/list", loginCheck, async (ctx, next) => {
     errno: 0,
     data: list,
   };
+});
+
+router.post("/del", loginCheck, async (ctx, next) => {
+  let { _id } = ctx.request.body;
+  const { username } = ctx.session.userInfo;
+  try {
+    await del(_id, username);
+    ctx.body = {
+      errno: 0,
+    };
+  } catch (ex) {
+    ctx.body = {
+      errno: -1,
+      message: "删除失败",
+    };
+  }
+});
+
+router.post("/update", loginCheck, async (ctx, next) => {
+  let { _id, content } = ctx.request.body;
+  const { username } = ctx.session.userInfo;
+  try {
+    const newData = await update(_id, username, content);
+    ctx.body = {
+      errno: 0,
+      data: newData,
+    };
+  } catch (ex) {
+    ctx.body = {
+      errno: -1,
+      message: "更新失败",
+    };
+  }
 });
 module.exports = router;

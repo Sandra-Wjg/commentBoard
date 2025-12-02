@@ -25,8 +25,10 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, defineEmits } from "vue";
+import { delCommentService, updateCommentService } from "../service/comment";
 
+const emit = defineEmits(["getCommentList"]);
 const props = defineProps({
   item: {
     type: Object,
@@ -39,12 +41,18 @@ const showEditModal = ref(false);
 const newComment = ref(props.item.content);
 const username = sessionStorage.getItem("username") || "";
 
-function del() {
-  console.log("删除评论：", props.item._id);
+async function del() {
+  if (window.confirm("确定删除？")) {
+    console.log("删除评论：", props.item._id);
+    await delCommentService(props.item._id);
+    emit("getCommentList");
+  }
 }
-function update() {
+async function update() {
   console.log("更新评论：", props.item._id, newComment.value);
   showEditModal.value = false;
+  await updateCommentService(props.item._id, newComment.value);
+  emit("getCommentList");
 }
 </script>
 

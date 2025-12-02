@@ -21,7 +21,7 @@
       </el-form-item>
     </el-form>
     <div v-for="item in itemList" :key="item._id" style="max-width: 600px">
-      <CommentList :item="item" />
+      <CommentList :item="item" @getCommentList="getCommentList" />
     </div>
   </div>
 </template>
@@ -33,7 +33,6 @@ import {
   createCommentService,
   getCommentListService,
 } from "../service/comment";
-
 onMounted(async () => {
   await getCommentList();
 });
@@ -49,12 +48,11 @@ async function getCommentList() {
   }
 }
 async function addComment() {
-  console.log("提交评论：", comment.value);
   await createCommentService(comment.value);
   await getCommentList();
+  comment.value = "";
 }
 async function changeFilter() {
-  console.log("切换过滤类型：", filterType.value);
   await getCommentList();
 }
 </script>

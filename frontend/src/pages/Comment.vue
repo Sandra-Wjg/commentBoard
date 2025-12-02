@@ -27,12 +27,16 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import CommentList from "../components/CommentList.vue";
 import {
   createCommentService,
   getCommentListService,
 } from "../service/comment";
+
+onMounted(async () => {
+  await getCommentList();
+});
 
 const filterType = ref(1);
 const comment = ref("");
@@ -52,19 +56,21 @@ const itemList = ref([
     content: "留言内容B 留言内容B 留言内容B 留言内容B 留言内容B ",
     createdAt: Date.now() - 5 * 60 * 1000, // 5 分钟以前
   },
-  {
-    _id: 3,
-    username: "wangwu",
-    content: "留言内容C 留言内容C 留言内容C 留言内容C 留言内容C ",
-    createdAt: Date.now() - 10 * 60 * 1000, // 10 分钟以前
-  },
 ]);
-
-function addComment() {
-  console.log("提交评论：", comment.value);
+async function getCommentList() {
+  const data = await getCommentListService(filterType.value);
+  if (data && data.length >= 0) {
+    itemList.value = data;
+  }
 }
-function changeFilter() {
+async function addComment() {
+  console.log("提交评论：", comment.value);
+  await createCommentService(comment.value);
+  await getCommentList();
+}
+async function changeFilter() {
   console.log("切换过滤类型：", filterType.value);
+  await getCommentList();
 }
 </script>
 

@@ -7,7 +7,7 @@
       <span class="time">{{ new Date(item.createdAt).toLocaleString() }}</span>
     </div>
     <p>{{ item.content }}</p>
-    <div v-if="item.username === 'zhangsan'">
+    <div v-if="item.username === username">
       <el-button type="text" @click="showEditModal = true">编辑</el-button>
       <el-button type="text" style="color: red" @click="del">删除</el-button>
     </div>

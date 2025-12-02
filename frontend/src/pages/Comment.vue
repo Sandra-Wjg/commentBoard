@@ -41,22 +41,7 @@ onMounted(async () => {
 const filterType = ref(1);
 const comment = ref("");
 
-const itemList = ref([
-  // 模拟数据
-  {
-    _id: 1,
-    username: "zhangsan",
-    content:
-      "留言内容A 留言内容A 留言内容A 留言内容A 留言内容A 留言内容A 留言内容A  留言内容A留言内容A 留言内容A 留言内容A 留言内容A 留言内容A",
-    createdAt: Date.now(),
-  },
-  {
-    _id: 2,
-    username: "lisi",
-    content: "留言内容B 留言内容B 留言内容B 留言内容B 留言内容B ",
-    createdAt: Date.now() - 5 * 60 * 1000, // 5 分钟以前
-  },
-]);
+const itemList = ref([]);
 async function getCommentList() {
   const data = await getCommentListService(filterType.value);
   if (data && data.length >= 0) {
